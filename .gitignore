@@ -30,3 +30,4 @@ terraform.rc
 # Local project files
 starter_python_project.sh
 readme_template.md
+infrastructure/lambda_function_payload.zip
