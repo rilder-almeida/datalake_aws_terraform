@@ -1,0 +1,11 @@
+**/__pycache__
+.pytest_cache
+
+.venv/
+venv/
+ENV/
+
+/**/.idea/*
+
+starter_python_project.sh
+readme_template.md
