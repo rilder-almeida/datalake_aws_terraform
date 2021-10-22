@@ -1,11 +1,32 @@
+
+# Pyteste files
 **/__pycache__
 .pytest_cache
 
+# Virtual Environment files
 .venv/
 venv/
 ENV/
 
+# IDE files
 /**/.idea/*
+/**/.vscode/*
 
+# Terraform Files
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+*tfplan*
+.terraformrc
+terraform.rc
+*.terraform.lock.hcl
+
+# Local project files
 starter_python_project.sh
 readme_template.md
