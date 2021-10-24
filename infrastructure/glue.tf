@@ -38,9 +38,9 @@ resource "aws_glue_job" "censo" {
   }
 }
 
-#############
-## TRIGGER ##
-#############
+##############
+## TRIGGERS ##
+##############
 
 resource "aws_glue_trigger" "censo" {
   name = "censo_trigger"
@@ -55,5 +55,15 @@ resource "aws_glue_trigger" "censo" {
       job_name = aws_glue_job.censo.name
       state    = "SUCCEEDED"
     }
+  }
+}
+
+resource "aws_glue_trigger" "schedule_crawler" {
+  name     = "schedule_crawler"
+  schedule = "cron(0 0 * * *)"
+  type     = "SCHEDULED"
+
+  actions {
+    job_name = aws_glue_job.censo.name
   }
 }
