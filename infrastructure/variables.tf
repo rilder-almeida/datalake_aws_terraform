@@ -9,3 +9,10 @@ variable "account_id" {
 variable "region" {
   default = "us-east-1" # set manually
 }
+variable "lambda_function_name" {
+  default = "EMRCensoJob"
+}
+
+variable "base_bucket_name" {
+  default = "datalake-iac-mod1" # set manually
+}
