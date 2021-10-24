@@ -10,6 +10,7 @@ resource "aws_s3_bucket" "datalake" {
     }
   }
 
+
   tags = {
     name        = "${var.base_bucket_name}"
     environment = "${var.environment}"
