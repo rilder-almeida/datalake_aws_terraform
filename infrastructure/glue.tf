@@ -58,8 +58,8 @@ resource "aws_glue_trigger" "censo" {
   }
 }
 
-resource "aws_glue_trigger" "schedule_crawler" {
-  name     = "schedule_crawler"
+resource "aws_glue_trigger" "scheduler_job" {
+  name     = "scheduler_job"
   schedule = "cron(0 0 * * *)"
   type     = "SCHEDULED"
 
