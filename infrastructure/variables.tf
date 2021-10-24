@@ -10,7 +10,7 @@ variable "region" {
   default = "us-east-1" # set manually
 }
 variable "lambda_function_name" {
-  default = "EMRCensoJob"
+  default = "UnzipCensoJob"
 }
 
 variable "base_bucket_name" {

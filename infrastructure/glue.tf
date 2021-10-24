@@ -32,7 +32,7 @@ resource "aws_glue_job" "censo" {
   command {
     script_location = "s3://${aws_s3_bucket.datalake.bucket}/emr-code/pyspark/job_emr_cvs_to_parquet.py"
   }
-  
+
   execution_property {
     max_concurrent_runs = "1"
   }
@@ -53,7 +53,7 @@ resource "aws_glue_trigger" "censo" {
   predicate {
     conditions {
       job_name = aws_glue_job.censo.name
-      state  = "SUCCEEDED"
+      state    = "SUCCEEDED"
     }
   }
 }

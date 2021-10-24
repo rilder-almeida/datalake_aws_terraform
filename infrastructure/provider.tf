@@ -10,6 +10,6 @@ terraform {
   backend "s3" {
     bucket = "terraform-state-051624633563" # set manually
     key    = "state/mod1/terraform.tfstate"
-    region = var.region
+    region = "us-east-1"
   }
 }

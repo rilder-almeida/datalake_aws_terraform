@@ -207,3 +207,102 @@ resource "aws_iam_role_policy_attachment" "lambda_attach" {
   role       = aws_iam_role.lambda.name
   policy_arn = aws_iam_policy.lambda.arn
 }
+
+###############
+## SAGEMAKER ##
+###############
+
+resource "aws_iam_policy" "sagemaker" {
+  name        = "IGTIAWSSagemakerBasicExecutionRolePolicy"
+  path        = "/"
+  description = "Provides write permissions to Sagemaker"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+}
+
+resource "aws_iam_role" "sagemaker" {
+  name = "IGTISagemakerRole"
+
+  assume_role_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams",
+                "ecr:GetAuthorizationToken"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+
+  tags = {
+    IES   = "IGTI",
+    CURSO = "EDC"
+  }
+
+}
+
+resource "aws_iam_role_policy_attachment" "sagemaker_attach" {
+  role       = aws_iam_role.sagemaker.name
+  policy_arn = aws_iam_policy.sagemaker.arn
+}
