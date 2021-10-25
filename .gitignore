@@ -1,4 +1,3 @@
-
 # Pyteste files
 **/__pycache__
 .pytest_cache
@@ -26,6 +25,9 @@ override.tf.json
 .terraformrc
 terraform.rc
 *.terraform.lock.hcl
+
+# Draw.io files
+*.drawio
 
 # Local project files
 starter_python_project.sh
