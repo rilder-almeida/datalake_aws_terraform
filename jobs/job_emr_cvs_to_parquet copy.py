@@ -44,7 +44,8 @@ def get_table_names():
 
     bucket = boto3.resource("s3").Bucket("datalake-iac-mod1-prod-051624633563")
     return [
-        obj.split(source_path)[1] for obj in bucket.objects.filter(Prefix=source_path)
+        obj.split(source_path)[1]
+        for obj in bucket.objects.filter(Prefix="staging/censo/year=2020/")
     ]
 
 
