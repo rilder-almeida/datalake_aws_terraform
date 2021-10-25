@@ -32,7 +32,7 @@ At the processing stage, thinking about optimization, the Glue service __(4)__ w
 
 - A Glue Trigger was deployed so that once a day, the raw data can be processed, and converted from csv format to parquet, through a Glue Job. It is interesting to note that other ETL jobs can be performed to that data is properly prepared for analysis.
 
-- Immediately after the data was converted, another trigger will run to call a crawler that will be responsible for allocating the parquet files in a glue database catalog.
+- Immediately after the data was converted, another Glue Trigger will run to call a Glue Crawler that will be responsible for allocating the parquet files in a glue database catalog.
 
 ### Provisioning
 
