@@ -1,7 +1,7 @@
 FROM python:3.8-slim-buster
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        build-essencial \
+        build-essential \
         gcc \
         ca-certificates \
         git \
