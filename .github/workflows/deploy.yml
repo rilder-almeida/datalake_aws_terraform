@@ -40,4 +40,5 @@ jobs:
         $COMMAND_IAC fmt
         $COMMAND_IAC validate
         $COMMAND_IAC plan
-        $COMMAND_IAC apply -auto-approve
+        # Avoiding unnecessary terraform apply
+        # $COMMAND_IAC apply -auto-approve
