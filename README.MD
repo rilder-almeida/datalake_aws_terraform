@@ -1,78 +1,47 @@
-# Product Name
-> Short blurb about what your product does.
+# AWS Datalake with Terraform and Github Actions
+> Project model for AWS Data Lake implementing by Terraform infrastructure and automated CI/CD with Github Actions.
 
-[![NPM Version][npm-image]][npm-url]
-[![Build Status][travis-image]][travis-url]
-[![Downloads Stats][npm-downloads]][npm-url]
+## For what purpose?
 
-One to two paragraph statement about your product and what it does.
+This project was born from the need to ingest batch data from a third-party website to the cloud and provide them with a suitable format to be consulted, in an optimized and automated way.
 
-![](header.png)
+## What was the context-situation?
 
-## Installation
+You are a data engineer at a large educational institution. The manager of his area started a new data intelligence project with the objective of understanding the performance of high school students from all over Brazil in the National High School Exam (ENEM). Thus, you will be responsible for building a Data Lake with data from ENEM 2019, processing it using appropriate tools and making the data available for consultation by business users and BI analysts. To perform this activity, the use of AWS services is recommended. However, if you prefer, you can build your lake and its data processing structure in any cloud provider you prefer.
 
-OS X & Linux:
+## Cloud Well-Architecture designed for case
 
-```sh
-npm install my-crazy-module --save
-```
+![](https://github.com/rilder-almeida/datalake_aws_terraform/raw/master/design_datalake.jpg)
 
-Windows:
+## How it works?
+To provide all the necessary infrastructure in an automated way, Github Actions and Terraform were used. This required two git workflows, deploy and test, each working on its own branch. After preparing the environment and security for the keys used by aws cli, a bash script will package python's lambda function (explained shortly) and finally terraform will be called to deploy the pre-configured services to the cloud.
 
-```sh
-edit autoexec.bat
-```
+Terraform, in turn, will provide all functions and policies for services like lambda, sagemaker, s3, glue job, glue triggers and glue crawler. As well, it will determine the flow between services and stages so that the objective is successfully achieved.
 
-## Usage example
+## Step-by-Step
+### Ingestion
 
-A few motivating and useful examples of how your product can be used. Spice this up with code blocks and potentially more screenshots.
+There are 2 ways to ingest required data:
+- Directly from the web source: In this case, the data will be compressed, zipped, so it was necessary to prepare services so that in addition to downloading the file, it will also be possible to decompress and load it into the bucket. This step is performed manually through a bash script __(1)__, loading a docker image from a python environment into the ECR and calling the Lambda function to create an instance of Sagemaker processing job __(3)__, which in turn will use the image to download the file, unzipping and loading to the S3.
 
-_For more examples and usage, please refer to the [Wiki][wiki]._
+- Loading locally to bucket __(2)__: In this way, data files are already in csv and unzipped format. A python script is called manually to load all files from the raw data folder directly to S3.
 
-## Development setup
+### Processing
 
-Describe how to install all development dependencies and how to run an automated test-suite of some kind. Potentially do this for multiple platforms.
+At the processing stage, thinking about optimization, the Glue service __(4)__ was used. Which will work in the following way:
 
-```sh
-make install
-npm test
-```
+- A Glue Trigger was deployed so that once a day, the raw data can be processed, and converted from csv format to parquet, through a Glue Job. It is interesting to note that other ETL jobs can be performed to that data is properly prepared for analysis.
 
-## Release History
+- Immediately after the data was converted, another trigger will run to call a crawler that will be responsible for allocating the parquet files in a glue database catalog.
 
-* 0.2.1
-    * CHANGE: Update docs (module code remains unchanged)
-* 0.2.0
-    * CHANGE: Remove `setDefaultXYZ()`
-    * ADD: Add `init()`
-* 0.1.1
-    * FIX: Crash when calling `baz()` (Thanks @GenerousContributorName!)
-* 0.1.0
-    * The first proper release
-    * CHANGE: Rename `foo()` to `bar()`
-* 0.0.1
-    * Work in progress
+### Provisioning
+
+Once the data is provisioned in a database catalog, they can be read in the Athena Database __(5)__ service, which through the metadata is capable to structuring them in tables separated by ingested file, so that it will possible to consult them in an analytically efficient way. Also will allow to save these queries in an automated way again in S3 in a gold zone.
 
 ## Meta
 
-Your Name – [@YourTwitter](https://twitter.com/dbader_org) – YourEmail@example.com
+Rilder Almeida – [LinkedIn](https://www.linkedin.com/in/rilder-almeida)
 
-Distributed under the XYZ license. See ``LICENSE`` for more information.
+rilder.almeida@gmail.com
 
-[https://github.com/yourname/github-link](https://github.com/dbader/)
-
-## Contributing
-
-1. Fork it (<https://github.com/yourname/yourproject/fork>)
-2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin feature/fooBar`)
-5. Create a new Pull Request
-
-<!-- Markdown link & img dfn's -->
-[npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/datadog-metrics
-[npm-downloads]: https://img.shields.io/npm/dm/datadog-metrics.svg?style=flat-square
-[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
-[wiki]: https://github.com/yourname/yourproject/wiki
+[Other Projets](https://github.com/rilder-almeida)
